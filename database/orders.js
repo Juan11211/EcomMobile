@@ -1,7 +1,7 @@
 const db = require('./db');
 
 // db.orders 
-const getOrders = async(ref) => {
+const getOrder = async(ref) => {
     return await db.orders.findOne({ ref })
 }
 
@@ -10,5 +10,5 @@ const createOrder = async(order) => {
     return {...order, _id: result.insertedId};
 }
 
-module.exports = { getOrders,
+module.exports = { getOrder,
 createOrder}

@@ -1,24 +1,28 @@
 const express = require('express');
-const { createOrder } = require('../database/orders');
+const { createOrder, getOrder } = require('../database/orders');
 const orderRouter = express.Router();
 
 
 orderRouter.get('/:reference', async(req, res, next) => {
 
-    const order = await getOrders(req.params.reference); 
+    const order = await getOrder(req.params.reference); 
 
     if(!order){
-        res.status(404).send()
+        res.status(404).send({status: 'FAILED', error: "Order not found"})
+        return;
     }
-    res.send(`Getting order with reference ${req.params.reference}`)
+    res.send({ status: 200, data: order})
     
 })
 
 
-orderRouter.post('/:orderDate', async(req, res, next) => {
+orderRouter.post('/', async(req, res, next) => {
     const orderData = req.body; 
-    
-    orderData.ref = (Math.random() + 1).toString(36).substring(7);
+    if(!orderData){
+        res.status(500).send('Order does not exist')
+    }
+
+    orderData.ref = (Math.random() + 1).toString(36).substring(7); // generates random ref code. 
 
 
  
