@@ -2,34 +2,42 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import CartListItem from "../components/CartListItem";
 import { Pressable } from "react-native";
 import { useSelector } from 'react-redux'
+import { selectDeliveryPrice, selectSubtotal, selectTotal } from "../store/cartSlice";
 
-const shoppingCartTotals = () => {
+const ShoppingCartTotals = () => {
+
+  const subTotal = useSelector(selectSubtotal)
+  const deliveryFee = useSelector(selectDeliveryPrice);
+  const total = useSelector(selectTotal)
+
+          return (
                     <View style={styles.totalContainer}>
                         <View style={styles.row}>
                             <Text style={styles.text}>Subtotal</Text>
-                            <Text  style={styles.text}>$410</Text>
+                            <Text  style={styles.text}>${subTotal}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.text}>Delivery</Text>
-                            <Text  style={styles.text}>$10</Text>
+                            <Text  style={styles.text}>${deliveryFee}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.textBold}>Total</Text>
-                            <Text  style={styles.textBold}>$420</Text>
+                            <Text  style={styles.textBold}>${total}</Text>
                         </View>
                     </View>
-}
+)}
 
 const ShoppingCart = () => { 
 
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems
+   = useSelector((state) => state.cart.items);
 
     return ( 
         <>
        <FlatList 
                 data={cartItems}
                 renderItem={({ item }) => <CartListItem cartItem={item}/>}
-                ListFooterComponent={shoppingCartTotals}
+                ListFooterComponent={ShoppingCartTotals}
             />
 
                 {/* ADD TO CART BUTTON */}
